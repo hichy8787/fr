@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form with Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .output-container {
+            margin-top: 20px;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #e9f7e9;
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Fill the Form</h2>
+    <form id="userForm">
+        <label for="fname">First Name:</label><br>
+        <input type="text" id="fname" name="fname" required><br><br>
+
+        <label for="lname">Last Name:</label><br>
+        <input type="text" id="lname" name="lname" required><br><br>
+
+        <label for="age">Age:</label><br>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="country">Country:</label><br>
+        <input type="text" id="country" name="country" required><br><br>
+
+        <label for="cni">CNI:</label><br>
+        <input type="text" id="cni" name="cni" required><br><br>
+
+        <button type="button" onclick="addCard()">Submit</button>
+    </form>
+</div>
+
+<div class="output-container" id="output">
+    <h2>User Cards</h2>
+    <div id="cardsContainer"></div>
+</div>
+
+<script>
+    function addCard() {
+        // Get form values
+        const fname = document.getElementById('fname').value;
+        const lname = document.getElementById('lname').value;
+        const age = document.getElementById('age').value;
+        const country = document.getElementById('country').value;
+        const cni = document.getElementById('cni').value;
+
+        // Save values to localStorage (for persistence)
+        const existingData = JSON.parse(localStorage.getItem('users')) || [];
+        const newUser = { fname, lname, age, country, cni };
+        existingData.push(newUser);
+        localStorage.setItem('users', JSON.stringify(existingData));
+
+        // Add a new card
+        createCard(newUser);
+
+        // Clear the form
+        document.getElementById('userForm').reset();
+    }
+
+    function createCard(user) {
+        const cardsContainer = document.getElementById('cardsContainer');
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <p><strong>First Name:</strong> ${user.fname}</p>
+            <p><strong>Last Name:</strong> ${user.lname}</p>
+            <p><strong>Age:</strong> ${user.age}</p>
+            <p><strong>Country:</strong> ${user.country}</p>
+            <p><strong>CNI:</strong> ${user.cni}</p>
+        `;
+
+        cardsContainer.appendChild(card);
+    }
+
+    // Load saved data from localStorage on page load
+    window.onload = function() {
+        const savedUsers = JSON.parse(localStorage.getItem('users')) || [];
+        savedUsers.forEach(user => createCard(user));
+    };
+</script>
+
+</body>
+</html>
