@@ -104,10 +104,7 @@
     }
 
     // Load saved data from localStorage on page load
-    window.onload = function() {
-        const savedUsers = JSON.parse(localStorage.getItem('users')) || [];
-        savedUsers.forEach(user => createCard(user));
-    };
+  
 </script>
 
 </body>
